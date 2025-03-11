@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8001:8000"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - mysql  # Make sure MySQL is listed here
+    volumes:
+      - .:/app
+    
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+  
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3307"  # Map 3307 to 3307
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=colabi_local
+      - MYSQL_TCP_PORT=3307  # This tells MySQL to use port 3307 internally
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+volumes:
+  mongodb_data:
+  mysql_data:

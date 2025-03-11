@@ -1,0 +1,1 @@
+"```json\n{\n  \"workflow_title\": \"\",\n  \"description\": \"\",\n  \"business_area\": \"\",\n  \"client_specific\": false,\n  \"schedule_type\": \"Instant\",\n  \"tasks\": []\n}\n```"

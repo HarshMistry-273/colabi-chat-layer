@@ -1,0 +1,133 @@
+from sqlalchemy import Boolean, Column, Integer, Numeric, String, Text, DateTime, BIGINT, TIMESTAMP, DECIMAL, BigInteger
+from sqlalchemy.dialects.mysql import LONGTEXT
+from db.connection import Base
+from sqlalchemy.sql import func
+
+
+class Agent(Base):
+    __tablename__ = "ai_agents"
+
+    id = Column(BIGINT, primary_key=True, autoincrement=True, index=True)
+    uuid = Column(String(255), unique=True)
+    name = Column(String(255), nullable=True)
+    cost = Column(Numeric(precision=10, scale=2), nullable=True)
+    description = Column(Text, nullable=True)
+    profile_image = Column(String(255), nullable=True)
+    video = Column(String(255), nullable=True)
+    key_feature = Column(Text, nullable=True)
+    comment = Column(Text, nullable=True)
+    personality = Column(Text, nullable=True)
+    focus_group_survey = Column(String(255), nullable=True)
+    own_data = Column(String(255), nullable=True)
+    top_idea = Column(String(255), nullable=True)
+    api_data = Column(String(255), nullable=True)
+    survey = Column(String(255), nullable=True)
+    group_id = Column(Text, nullable=True)
+    vector_id = Column(String(36), nullable=True)
+    is_chatbot = Column(Boolean, default=False)
+    created_by = Column(Integer, nullable=True)
+    created_at = Column(DateTime, nullable=True, server_default=func.now())
+    updated_at = Column(
+        DateTime, nullable=True, server_default=func.now(), onupdate=func.now()
+    )
+    
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    uuid = Column(String(36), nullable=True)
+    name = Column(String(255), nullable=False)
+    email = Column(String(255), nullable=False, unique=True)
+    role_id = Column(Integer, nullable=False, default=2)
+    type = Column(String(255), nullable=True)
+    role_type_id = Column(Integer, nullable=True)
+    country_id = Column(Integer, nullable=False, default=1)
+    email_verified_at = Column(TIMESTAMP, nullable=True)
+    password = Column(String(255), nullable=False)
+    remember_token = Column(String(100), nullable=True)
+    avatar = Column(String(255), nullable=False, default='avatar.png')
+    video = Column(String(255), nullable=True)
+    address = Column(String(255), nullable=True)
+    tag_line = Column(String(255), nullable=True)
+    about_you = Column(LONGTEXT, nullable=True)
+    incentive_type = Column(String(255), nullable=True)
+    incentive_comments = Column(Text, nullable=True)
+    interest_comments = Column(Text, nullable=True)
+    messenger_color = Column(String(255), nullable=False, default='#2180f3')
+    layout = Column(String(255), nullable=True)
+    business_type = Column(String(255), nullable=True)
+    user_type = Column(String(255), nullable=True)
+    dark_mode = Column(Boolean, nullable=False, default=False)
+    active_status = Column(Boolean, nullable=False, default=True)
+    lang = Column(String(255), nullable=True)
+    social_type = Column(String(255), nullable=True)
+    created_by = Column(BigInteger, nullable=True)
+    plan_id = Column(BigInteger, nullable=True)
+    plan_expired_date = Column(DateTime, nullable=True)
+    phone = Column(String(255), nullable=True)
+    phone_verified_at = Column(TIMESTAMP, nullable=True)
+    dark_layout = Column(Boolean, nullable=False, default=False)
+    rtl_layout = Column(Boolean, nullable=False, default=False)
+    transprent_layout = Column(Boolean, nullable=False, default=True)
+    theme_color = Column(String(255), nullable=False, default='theme-2')
+    users_grid_view = Column(Boolean, nullable=False, default=False)
+    forms_grid_view = Column(Boolean, nullable=False, default=False)
+    created_at = Column(TIMESTAMP, nullable=True)
+    updated_at = Column(TIMESTAMP, nullable=True)
+    company_name = Column(String(255), nullable=True)
+    position = Column(String(255), nullable=True)
+    last_name = Column(String(255), nullable=True)
+    state = Column(String(255), nullable=True)
+    zip_code = Column(String(255), nullable=True)
+    client = Column(Boolean, nullable=False, default=False)
+    age = Column(String(255), nullable=True)
+    gender = Column(String(255), nullable=True)
+    description = Column(Text, nullable=True)
+    focus_group = Column(Boolean, nullable=False, default=False)
+    city = Column(String(50), nullable=True)
+    interests = Column(Text, nullable=True)
+    interested_rate = Column(Integer, nullable=True)
+    credential_send = Column(Boolean, nullable=False, default=False)
+    business_name = Column(String(255), nullable=True)
+    competition_value = Column(String(255), nullable=True)
+    my_team = Column(Boolean, nullable=False, default=False)
+    from_public = Column(Boolean, nullable=False, default=False)
+    job_connected = Column(String(255), nullable=True)
+    first_name = Column(String(50), nullable=True)
+    gmail = Column(String(255), nullable=True)
+    facebook = Column(String(255), nullable=True)
+    twitter = Column(String(255), nullable=True)
+    linkedIn = Column(String(255), nullable=True)
+    website_name = Column(String(255), nullable=True)
+    work_phone = Column(String(255), nullable=True)
+    social_provider_name = Column(String(255), nullable=True)
+    industry = Column(String(255), nullable=True)
+    objective = Column(Text, nullable=True)
+    suburb = Column(Text, nullable=True)
+    group_id = Column(Text, nullable=True)
+    profile_img = Column(Text, nullable=True)
+    profile_overview = Column(Text, nullable=True)
+    subscription_id = Column(String(255), nullable=True)
+    wordpress_uid = Column(String(255), nullable=True)
+    wordpress_lid = Column(String(255), nullable=True)
+    profile_status = Column(Boolean, nullable=False, default=False)  # 0 => Public, 1 => Private
+    stripe_customer_id = Column(String(255), nullable=True)
+    previous_role_id = Column(Integer, nullable=True)
+    admin_respondent = Column(Boolean, nullable=False, default=False)
+    is_profile_completed = Column(Boolean, nullable=False, default=False)
+    rating = Column(DECIMAL(8,2), nullable=False, default=0.00)
+
+    def __repr__(self):
+        return f"<User(id={self.id}, name={self.name}, email={self.email})>"
+
+class BusinessArea(Base):
+    __tablename__ = 'business_areas'
+    
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    name = Column(String(255), nullable=False)
+    created_by = Column(Integer, nullable=True)
+    created_at = Column(TIMESTAMP, nullable=True, default=None)
+    updated_at = Column(TIMESTAMP, nullable=True, default=None)
+
+    def __repr__(self):
+        return f"<BusinessArea(id={self.id}, name={self.name})>"
