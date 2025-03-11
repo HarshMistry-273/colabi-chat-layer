@@ -111,7 +111,7 @@ async def chat_layer(
                     f"Validating and adding user chat for client {client_id} & chat {chat_id}"
                 )
                 if not chat and not mongo_manager.create_chat(
-                    user_id=client_id, chat_id=chat_id, type=data["type"]
+                    user_id=client_id, chat_id=chat_id, type=data["type"], message=data["message"]
                 ):
                     logger.error(
                         f"Faile0d to create chat {chat_id} for user {client_id}"

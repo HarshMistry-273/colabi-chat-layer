@@ -59,14 +59,14 @@ class MongoManager:
             logger.error(f"Error in get_chat: {str(e)}", exc_info=True)
             return False
 
-    def create_chat(self, user_id: str, chat_id: str, type: str) -> dict:
+    def create_chat(self, user_id: str, chat_id: str, type: str, message: str) -> dict:
         try:
             logger.info(
                 f"Creating new chat {chat_id} for user {user_id} of type {type}"
             )
             new_chat = Chat(
                 chat_id=chat_id,
-                chat_title="New-Chat",
+                chat_title=message,
                 type=type,
                 timestamp=str(datetime.utcnow()),
                 messages=[],
