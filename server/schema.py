@@ -13,6 +13,7 @@ class Chat(BaseModel):
     chat_title: str
     type: str
     timestamp: datetime
+    workflow: dict = {}
     messages: List[Message]
 
 class UserChat(BaseModel):

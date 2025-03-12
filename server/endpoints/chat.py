@@ -12,7 +12,7 @@ from server.utils.normal_chat import normal_chat, clean_messages
 from server.utils.log import logger
 from server.utils.retrieve_context import retrieve_similar_docs, get_parsed_response
 from server.utils.retrieve_data import retrieve_data
-from server.utils.workflow_chat import workflow_chat
+from server.utils.workflow_chat import workflow_chat, clean_workflow_messages
 from server.schema import Message
 # from server.utils.dynamicbot import DynamicBot
 # from server.utils.chatbotprompts import *
@@ -291,10 +291,21 @@ async def chat_layer(
                             {"error": "Failed to save bot response", "status": "error"}
                         )
                         continue
+
                     logger.info("checking the conditions")
                     workflow, is_workflow_generated = extract_json(bot_response=bot_response)
                     logger.info(is_workflow_generated)
                     if is_workflow_generated:
+
+                        update_result = mongo_manager.update_chat(
+                                        user_id=client_id, 
+                                        chat_id=chat_id, 
+                                        **workflow
+                                    )
+                        
+                        if not update_result:
+                            logger.error(f"Failed to update workflow for chat {chat_id}, client {client_id}")
+
                         await websocket.send_json(
                         {"bot_message": "Workflow Generated!",  "status": "success", **workflow}
                     )
@@ -365,7 +376,9 @@ async def chat_layer(
 
     #Cleanup
     finally:
+        logger.info("PPP")
         clean_messages()
+        clean_workflow_messages()
         logger.info(f"Cleaning up connection for client {client_id}")
         manager.disconnect(websocket)
 

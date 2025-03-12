@@ -68,9 +68,11 @@ class MongoManager:
                 chat_id=chat_id,
                 chat_title=message,
                 type=type,
+                workflow={},
                 timestamp=str(datetime.utcnow()),
                 messages=[],
             )
+            print(new_chat)
             result = self.collection.update_one(
                 {"user_id": user_id}, {"$push": {"chats": new_chat.model_dump()}}
             )
@@ -172,3 +174,22 @@ class MongoManager:
         except Exception as e:
             logger.error(f"Error in get_all_chats: {str(e)}", exc_info=True)
             return None
+    
+    def update_chat(self, user_id: str, chat_id: str, workflow: dict) -> dict:
+        try:
+            logger.info(
+                f"Updating chat {chat_id} for user {user_id} of type {type}"
+            )
+            
+            result = self.collection.update_one(
+            {"user_id": user_id, "chats.chat_id": chat_id},
+            {"$set": {"chats.$.workflow": workflow}}
+            )
+            logger.info(
+                f"Chat update {'successful' if result.modified_count > 0 else 'failed'}"
+            )
+            return result.modified_count > 0
+
+        except Exception as e:
+            logger.error(f"Error in create_chat: {str(e)}", exc_info=True)
+            return False
